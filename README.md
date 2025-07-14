@@ -1,20 +1,69 @@
-# 📈 Statistical Arbitrage Strategy using Pairs Trading
-
-## 🧠 Project Overview
-
-This project implements a **Statistical Arbitrage Strategy using Pairs Trading**, a market-neutral approach that profits from the **mean-reverting behavior** between two historically related financial instruments.
-
-We will:
-
-1. **Download historical price data** for two selected stocks.
-2. **Visualize their price movements** to assess co-movement behavior.
-3. **Perform cointegration analysis** using OLS regression and the Augmented Dickey-Fuller (ADF) test to verify a long-term equilibrium relationship.
-4. **Construct and normalize the spread** between the two assets using z-scores.
-5. [In next stage] **Generate trading signals** and **backtest** the strategy based on entry/exit thresholds.
-
-This strategy is based on the premise that while individual asset prices may drift apart in the short term, their relative pricing (the spread) tends to revert to a historical mean if they are cointegrated.
-
-📍 **Objective**:  
-To explore whether a statistically significant and mean-reverting relationship exists between two assets, and to lay the groundwork for a rule-based trading system using real market data and quantitative finance techniques.
 
 ---
+
+## 🔧 Key Sections in the Code
+
+### 1. 📦 Imports and Setup
+- Python libraries: `pandas`, `numpy`, `statsmodels`, `seaborn`, `matplotlib`, `yfinance`
+- Configuration for plotting and date range
+
+### 2. 🏛️ Universe Selection
+- Indian IT stocks (large, mid, and small cap)
+- Download historical data (using Yahoo Finance)
+- Clean and preprocess price data
+
+### 3. 📊 Correlation Analysis
+- Compute and visualize correlation matrix
+- Filter highly correlated pairs (e.g., correlation > 0.8)
+
+### 4. 🔁 Helper Functions
+- `calculate_hedge_ratio()`: OLS regression for hedge ratio (beta)
+- `calculate_spread()`: Computes spread between two stocks
+- `adf_test()`: Augmented Dickey-Fuller test for stationarity
+- `calculate_half_life()`: Measures speed of mean reversion
+
+### 5. 🔎 Pairs Testing Loop
+- Evaluate all pair combinations using:
+  - Cointegration (ADF test)
+  - Correlation
+  - Spread characteristics
+  - Half-life of mean reversion
+- Store results in a structured DataFrame
+
+### 6. ✅ Result Filtering
+- Filter valid pairs (ADF p-value < 0.05)
+- Sort by strongest cointegration (lowest ADF stat)
+- Optional: Filter by half-life < 30 days
+
+### 7. 🧪 Backtesting Framework
+- Generate entry/exit signals based on z-score
+- Simulate pair-wise strategy returns
+- Calculate performance metrics:
+  - Total return
+  - Annualized return & volatility
+  - Sharpe Ratio
+  - Maximum drawdown
+
+### 8. 🚀 Backtest Top Pairs
+- Backtest top cointegrated pairs (based on ADF or Sharpe Ratio)
+- Export results for review
+
+### 9. 📈 Visualization
+- Plot for best pair:
+  - Price series
+  - Spread with ±1 std dev bands
+  - Z-score and trade signals
+  - Cumulative strategy returns
+
+### 10. 📊 Portfolio Simulation (Optional)
+- Construct equal-weight portfolio of top 3 pairs
+- Compute portfolio-level returns and performance
+- Compare portfolio Sharpe with individual best pair
+
+### 11. 💰 Investment Simulation (Optional)
+- Track actual investment capital over time
+- Estimate ROI, final portfolio value, and net profit
+
+---
+
+## 📈 Sample Output (Console)
